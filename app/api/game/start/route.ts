@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { prisma } from '@/lib/prisma'
+import { createInitialState } from '@/lib/game-engine'
 
 export async function POST(request: NextRequest) {
   const supabase = await createServerSupabaseClient()
@@ -11,7 +12,7 @@ export async function POST(request: NextRequest) {
 
   const room = await prisma.room.findUnique({
     where: { code: roomCode },
-    include: { roomPlayers: true },
+    include: { roomPlayers: { include: { profile: true } } },
   })
 
   if (!room) return Response.json({ error: 'Room not found' }, { status: 404 })
@@ -26,6 +27,14 @@ export async function POST(request: NextRequest) {
 
   const shuffled = [...players].sort(() => Math.random() - 0.5)
 
+  const initialState = createInitialState({
+    players: shuffled.map((p, i) => ({
+      id: p.userId,
+      name: p.profile.username,
+      turnOrder: i,
+    })),
+  })
+
   await prisma.$transaction([
     prisma.room.update({ where: { id: room.id }, data: { status: 'active' } }),
     ...shuffled.map((p, i) =>
@@ -34,6 +43,10 @@ export async function POST(request: NextRequest) {
         data: { turnOrder: i },
       })
     ),
+    prisma.gameState.create({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: { roomId: room.id, state: initialState as any, version: 0 },
+    }),
   ])
 
   return Response.json({ ok: true })

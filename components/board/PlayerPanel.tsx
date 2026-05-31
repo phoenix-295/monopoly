@@ -8,6 +8,7 @@ export interface PanelPlayer {
   position: number
   isCurrentTurn: boolean
   color: string
+  isOnline?: boolean
 }
 
 interface Props {
@@ -83,15 +84,34 @@ export default function PlayerPanel({ players, myId, onSelectPlayer, selectedId 
                 fontFamily: 'Playfair Display, serif',
                 fontWeight: 700,
                 fontSize: '0.85rem',
-                color: 'var(--cream)',
+                color: player.color,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.3rem',
+                flex: 1,
               }}
             >
-              {player.token ? TOKEN_EMOJI[player.token] ?? '🎲' : '🎲'} {player.username}
+              <span>{player.token ? TOKEN_EMOJI[player.token] ?? '🎲' : '🎲'} {player.username}</span>
               {player.id === myId && (
                 <span style={{ fontSize: '0.7rem', color: 'var(--cream-dim)', marginLeft: 4 }}>(you)</span>
+              )}
+              {player.isOnline !== undefined && (
+                <span 
+                  title={player.isOnline ? 'Online' : 'Offline'}
+                  style={{
+                    display: 'inline-block',
+                    width: 7,
+                    height: 7,
+                    borderRadius: '50%',
+                    background: player.isOnline ? '#22C55E' : '#6B7280',
+                    boxShadow: player.isOnline ? '0 0 6px #22C55E, 0 0 2px #22C55E' : 'none',
+                    marginLeft: '0.4rem',
+                    transition: 'all 300ms ease',
+                  }}
+                />
               )}
             </span>
             {player.isCurrentTurn && (

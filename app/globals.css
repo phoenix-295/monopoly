@@ -354,6 +354,172 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 100px;
 }
 
+/* ─── Game page responsive layout ───────────────────────── */
+.game-layout {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.game-sidebar-left {
+  width: 220px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.game-sidebar-right {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+.game-board-outer-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.game-board-wrap {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.game-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.game-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* ≤ 900px: stack vertically, board full-width */
+@media (max-width: 900px) {
+  .game-layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .game-sidebar-left {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .game-sidebar-left > * {
+    flex: 1 1 200px;
+  }
+
+  .game-sidebar-right {
+    width: 100%;
+  }
+
+  .game-board-outer-wrap {
+    width: 100%;
+  }
+
+  .game-board-wrap {
+    width: 100%;
+  }
+}
+
+/* ≤ 600px: compact top bar, smaller gaps */
+@media (max-width: 600px) {
+  .game-topbar {
+    gap: 0.5rem;
+  }
+
+  .game-topbar-actions {
+    gap: 0.4rem;
+  }
+}
+
+/* ─── Board squares ─────────────────────────────────────── */
+.square-clickable {
+  transition: box-shadow 120ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .square-clickable:hover {
+    box-shadow: inset 0 0 0 2px rgba(255, 107, 53, 0.55);
+    z-index: 1;
+  }
+}
+
+.square-clickable:active {
+  box-shadow: inset 0 0 0 2.5px var(--gold);
+  transition: box-shadow 60ms var(--ease-out);
+}
+
+/* Token dot — pop-in via @starting-style */
+.token-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.12);
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+/* Card backdrop */
+.card-backdrop {
+  opacity: 1;
+  transition: opacity 200ms var(--ease-out);
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+/* Card modal */
+.card-modal {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+}
+
+/* Close button */
+.card-close {
+  transition: opacity 120ms ease, transform 120ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-close:hover {
+    opacity: 0.75;
+  }
+}
+
+.card-close:active {
+  transform: scale(0.85);
+  transition: transform 80ms var(--ease-out);
+}
+
 /* prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up {
@@ -372,3 +538,52 @@ h1, h2, h3, h4, h5, h6 {
     transition: opacity 150ms ease;
   }
 }
+
+/* Floating board zoom controls for mobile devices */
+.board-mobile-controls {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.btn-mobile-ctrl {
+  background: rgba(255, 253, 245, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid var(--felt-border);
+  color: var(--cream);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.45rem 0.8rem;
+  border-radius: 100px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 160ms var(--ease-out);
+}
+
+html[data-theme="dark"] .btn-mobile-ctrl {
+  background: rgba(30, 20, 64, 0.85);
+  border-color: var(--felt-border);
+  color: var(--cream);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.btn-mobile-ctrl:active {
+  transform: scale(0.95);
+}
+
+@media (min-width: 901px) {
+  .board-mobile-controls {
+    display: none;
+  }
+}
+

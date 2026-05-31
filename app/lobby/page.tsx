@@ -61,6 +61,15 @@ export default function LobbyPage() {
       <div className="fixed bottom-6 left-6 text-2xl opacity-50 select-none" style={{ color: 'var(--prop-green)' }}>♣</div>
       <div className="fixed bottom-6 right-6 text-2xl opacity-50 select-none" style={{ color: 'var(--prop-orange)' }}>♦</div>
 
+      {/* Profile link */}
+      <button
+        onClick={() => router.push('/profile')}
+        className="fixed top-6 left-6 btn-ghost text-xs px-3 py-1.5 rounded"
+        style={{ letterSpacing: '0.1em' }}
+      >
+        Profile
+      </button>
+
       {/* Sign out */}
       <button
         onClick={handleSignOut}
