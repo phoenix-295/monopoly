@@ -1,26 +1,374 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light pastel cartoony palette */
+  --felt: #FFFDF5;
+  --felt-raised: #FFF5E0;
+  --felt-card: #FFFFFF;
+  --felt-border: #FFD6A5;
+  --felt-border-bright: #FFB347;
+
+  /* Primary: Monopoly orange */
+  --gold: #FF6B35;
+  --gold-bright: #FF8C5A;
+  --gold-dim: #CC4A1A;
+  --gold-muted: rgba(255, 107, 53, 0.12);
+
+  /* Text on light background */
+  --cream: #1A0800;
+  --cream-dim: #7A5030;
+  --cream-faint: rgba(26, 8, 0, 0.05);
+
+  /* Monopoly property colors */
+  --prop-red: #E8192C;
+  --prop-orange: #F97316;
+  --prop-yellow: #EAB308;
+  --prop-green: #22C55E;
+  --prop-blue: #3B82F6;
+  --prop-pink: #EC4899;
+  --prop-teal: #0EA5E9;
+  --prop-brown: #92400E;
+
+  --shadow-card: 0 4px 24px rgba(255, 107, 53, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
+  --shadow-deep: 0 8px 32px rgba(255, 107, 53, 0.15), 0 2px 8px rgba(0, 0, 0, 0.08);
+  --red: #E8192C;
+
+  /* Emil easing */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Dark mode — deep indigo night pastel palette */
+/* html[data-theme="dark"] beats :root (0,1,1 vs 0,1,0) */
+html[data-theme="dark"] {
+  --felt: #160D2B;
+  --felt-raised: #1E1440;
+  --felt-card: #261A50;
+  --felt-border: #3D2870;
+  --felt-border-bright: #5C3EA8;
+  --gold: #FF8C5A;
+  --gold-bright: #FFB080;
+  --gold-dim: #CC5520;
+  --gold-muted: rgba(255, 140, 90, 0.15);
+  --cream: #EDE0FF;
+  --cream-dim: #9B88C8;
+  --cream-faint: rgba(237, 224, 255, 0.05);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5), 0 1px 4px rgba(80, 40, 160, 0.2);
+  --shadow-deep: 0 8px 32px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(80, 40, 160, 0.3);
+}
+
+html[data-theme="dark"] body {
+  background-color: #160D2B;
+  background-image:
+    radial-gradient(ellipse at 5% 15%, rgba(255, 107, 53, 0.12) 0%, transparent 45%),
+    radial-gradient(ellipse at 95% 85%, rgba(100, 60, 200, 0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 10%, rgba(236, 72, 153, 0.10) 0%, transparent 40%),
+    radial-gradient(ellipse at 15% 85%, rgba(59, 130, 246, 0.10) 0%, transparent 40%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='4' cy='4' r='1.2' fill='%23FF8C5A' opacity='0.07'/%3E%3Ccircle cx='20' cy='20' r='1' fill='%239B88C8' opacity='0.07'/%3E%3Ccircle cx='28' cy='8' r='0.9' fill='%23EC4899' opacity='0.06'/%3E%3C/svg%3E");
+  color: #EDE0FF;
+}
+
+html[data-theme="dark"] .btn-gold {
+  background: linear-gradient(135deg, #FF7B45 0%, #FF9E6A 100%);
+  box-shadow: 0 4px 16px rgba(255, 123, 69, 0.45), 0 1px 3px rgba(255, 123, 69, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+html[data-theme="dark"] .badge-ready {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.45);
+  color: #4ade80;
+}
+
+html[data-theme="dark"] .badge-waiting {
+  background: rgba(255, 140, 90, 0.12);
+  border-color: rgba(255, 140, 90, 0.35);
+  color: #FF8C5A;
+}
+
+html[data-theme="dark"] .felt-input {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+html[data-theme="dark"] .felt-input:focus {
+  border-color: #FF8C5A;
+  box-shadow: 0 0 0 4px rgba(255, 140, 90, 0.15);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Crimson Pro', Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--felt);
+  color: var(--cream);
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='36' viewBox='0 0 32 36'%3E%3C!-- Hat body --%3E%3Crect x='9' y='5' width='14' height='17' rx='2' fill='%231A0800'/%3E%3C!-- Orange band --%3E%3Crect x='9' y='16' width='14' height='3.5' fill='%23FF6B35'/%3E%3C!-- Brim --%3E%3Crect x='4' y='22' width='24' height='5' rx='2.5' fill='%231A0800'/%3E%3C!-- White shine on hat --%3E%3Crect x='11' y='7' width='3.5' height='7' rx='1.5' fill='white' opacity='0.18'/%3E%3C!-- Brim shine --%3E%3Crect x='5' y='23' width='10' height='2' rx='1' fill='white' opacity='0.12'/%3E%3C/svg%3E") 16 0, auto;
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse at 5% 15%, rgba(255, 107, 53, 0.10) 0%, transparent 45%),
+    radial-gradient(ellipse at 95% 85%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 10%, rgba(236, 72, 153, 0.07) 0%, transparent 40%),
+    radial-gradient(ellipse at 15% 85%, rgba(34, 197, 94, 0.07) 0%, transparent 40%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ccircle cx='4' cy='4' r='1.2' fill='%23FF6B35' opacity='0.06'/%3E%3Ccircle cx='20' cy='20' r='1' fill='%233B82F6' opacity='0.05'/%3E%3Ccircle cx='28' cy='8' r='0.9' fill='%23EC4899' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* Money bag cursor for interactive elements */
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+select,
+label[for],
+.btn-gold,
+.btn-ghost {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3C!-- Bag body --%3E%3Cellipse cx='16' cy='21' rx='10' ry='9' fill='%23FFB347'/%3E%3C!-- Bag neck --%3E%3Crect x='12.5' y='10' width='7' height='6' rx='3' fill='%23FFB347'/%3E%3C!-- Bag tie knot --%3E%3Cellipse cx='16' cy='10' rx='4' ry='2.5' fill='%23FF6B35'/%3E%3C!-- Dollar sign --%3E%3Ctext x='16' y='25' text-anchor='middle' font-size='11' font-weight='900' fill='%231A0800' font-family='serif'%3E%24%3C/text%3E%3C!-- Shine --%3E%3Cellipse cx='12' cy='17' rx='2.5' ry='3' fill='white' opacity='0.25'/%3E%3C/svg%3E") 16 4, pointer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--cream);
+  letter-spacing: 0.01em;
+}
+
+/* Gold rule — now a multicolor rainbow rule */
+.gold-rule {
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--prop-red),
+    var(--prop-orange),
+    var(--prop-yellow),
+    var(--prop-green),
+    var(--prop-blue),
+    transparent
+  );
+  margin: 1.5rem 0;
+  border-radius: 1px;
+}
+
+/* Card surface — white with warm border and colored shadow */
+.felt-card {
+  background: var(--felt-card);
+  border: 2px solid var(--felt-border);
+  box-shadow: var(--shadow-card);
+  border-radius: 12px !important;
+}
+
+/* Gold button — now Monopoly orange, pill-shaped */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
+  color: #FFFFFF;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.4), 0 1px 3px rgba(255, 107, 53, 0.2), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-gold:hover {
+    box-shadow: 0 6px 24px rgba(255, 107, 53, 0.55), 0 2px 6px rgba(255, 107, 53, 0.3), inset 0 1px 0 rgba(255,255,255,0.25);
+    transform: translateY(-1px);
+  }
+}
+
+.btn-gold:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+  transition: transform 100ms var(--ease-out), box-shadow 100ms var(--ease-out);
+}
+
+.btn-gold:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Ghost button */
+.btn-ghost {
+  background: transparent;
+  color: var(--cream-dim);
+  border: 2px solid var(--felt-border);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: transform 160ms var(--ease-out), border-color 150ms ease, color 150ms ease, background 150ms ease;
+  font-family: 'Crimson Pro', serif;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-muted);
+  }
+}
+
+.btn-ghost:active {
+  transform: scale(0.97);
+  transition: transform 100ms var(--ease-out);
+}
+
+/* Input field */
+.felt-input {
+  background: var(--felt-raised);
+  border: 2px solid var(--felt-border);
+  border-radius: 10px;
+  color: var(--cream);
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  outline: none;
+}
+
+.felt-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.12);
+}
+
+.felt-input::placeholder {
+  color: var(--cream-dim);
+  opacity: 0.6;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--felt-raised); }
+::-webkit-scrollbar-thumb { background: var(--felt-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+
+/* Token badge */
+.token-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--gold-muted);
+  border: 2px solid var(--felt-border);
+  font-size: 1.2rem;
+}
+
+/* Emil: entry from scale(0.97) + opacity, 280ms custom ease-out */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 280ms var(--ease-out) forwards;
+}
+
+/* Emil stagger */
+.stagger-children > *:nth-child(1) { animation: fadeIn 250ms var(--ease-out) both; animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation: fadeIn 250ms var(--ease-out) both; animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation: fadeIn 250ms var(--ease-out) both; animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation: fadeIn 250ms var(--ease-out) both; animation-delay: 180ms; }
+
+.animate-shimmer {
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright), var(--gold));
+  background-size: 200% auto;
+  animation: shimmer 2s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Emil: @starting-style entry for error banners */
+.error-banner {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+
+  @starting-style {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* Ready badges */
+.badge-ready {
+  background: rgba(34, 197, 94, 0.14);
+  border: 1.5px solid rgba(34, 197, 94, 0.5);
+  color: #16a34a;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'Crimson Pro', serif;
+  font-weight: 700;
+  padding: 0.1rem 0.55rem;
+  border-radius: 100px;
+}
+
+.badge-waiting {
+  background: rgba(255, 107, 53, 0.08);
+  border: 1.5px solid rgba(255, 107, 53, 0.3);
+  color: var(--gold-dim);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'Crimson Pro', serif;
+  font-weight: 600;
+  padding: 0.1rem 0.55rem;
+  border-radius: 100px;
+}
+
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+    opacity: 1;
+  }
+  .stagger-children > * {
+    animation: none;
+    opacity: 1;
+  }
+  .btn-gold:active,
+  .btn-ghost:active {
+    transform: none;
+  }
+  .error-banner {
+    transition: opacity 150ms ease;
+  }
 }
