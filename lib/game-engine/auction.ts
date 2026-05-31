@@ -14,7 +14,7 @@ export function startAuction(state: GameState, squareIndex: number): GameState {
     passedPlayerIds: [],
   }
   const withAuction: GameState = { ...state, auction, phase: 'auctioning' as const }
-  return addLog(withAuction, `Auction started for square ${squareIndex}. Starting at $1.`)
+  return addLog(withAuction, `Auction started for square ${squareIndex}. Starting at ₹1.`)
 }
 
 export function placeBid(state: GameState, playerId: string, amount: number): GameState {
@@ -22,7 +22,7 @@ export function placeBid(state: GameState, playerId: string, amount: number): Ga
   if (state.auction.currentBidderId !== playerId) throw new Error('Not your turn to bid')
 
   const player = state.players.find(p => p.id === playerId)!
-  if (amount <= state.auction.highestBid) throw new Error(`Bid must exceed current high of $${state.auction.highestBid}`)
+  if (amount <= state.auction.highestBid) throw new Error(`Bid must exceed current high of ₹${state.auction.highestBid}`)
   if (amount > player.cash) throw new Error('Insufficient funds')
 
   const auction: AuctionState = {
@@ -33,7 +33,7 @@ export function placeBid(state: GameState, playerId: string, amount: number): Ga
     currentBidderId: advanceBidder(state, playerId),
   }
   const withBid: GameState = { ...state, auction }
-  return addLog(withBid, `${player.name} bid $${amount}.`)
+  return addLog(withBid, `${player.name} bid ₹${amount}.`)
 }
 
 export function passBid(state: GameState, playerId: string): GameState {
@@ -85,7 +85,7 @@ function resolveAuction(state: GameState): GameState {
       auction: null,
       phase: 'end_turn',
     }
-    next = addLog(next, `${winner.name} won the auction for sq.${auction.squareIndex} at $${auction.highestBid}.`)
+    next = addLog(next, `${winner.name} won the auction for sq.${auction.squareIndex} at ₹${auction.highestBid}.`)
   }
 
   return next

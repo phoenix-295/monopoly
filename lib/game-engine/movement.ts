@@ -17,7 +17,7 @@ export function movePlayer(
   let next = updatePlayer(state, playerId, { position: newPos })
   if (passedGo) {
     next = updatePlayer(next, playerId, { cash: player.cash + GO_SALARY })
-    next = addLog(next, `${player.name} passed GO and collected $${GO_SALARY}.`)
+    next = addLog(next, `${player.name} passed GO and collected ₹${GO_SALARY}.`)
   }
 
   return { state: next, passedGo }
@@ -35,7 +35,7 @@ export function movePlayerTo(
   let next = updatePlayer(state, playerId, { position: targetIndex })
   if (passedGo) {
     next = updatePlayer(next, playerId, { cash: player.cash + GO_SALARY })
-    next = addLog(next, `${player.name} passed GO and collected $${GO_SALARY}.`)
+    next = addLog(next, `${player.name} passed GO and collected ₹${GO_SALARY}.`)
   }
 
   return { state: next, passedGo }

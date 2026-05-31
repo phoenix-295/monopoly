@@ -20,7 +20,7 @@ export function mortgageProperty(state: GameState, playerId: string, squareIndex
     ),
   }
   next = transferCash(next, null, playerId, mortgageValue)
-  next = addLog(next, `${state.players.find(p => p.id === playerId)!.name} mortgaged sq.${squareIndex} for $${mortgageValue}.`)
+  next = addLog(next, `${state.players.find(p => p.id === playerId)!.name} mortgaged sq.${squareIndex} for ₹${mortgageValue}.`)
   return next
 }
 
@@ -34,7 +34,7 @@ export function unmortgageProperty(state: GameState, playerId: string, squareInd
   const unmortgageCost = Math.floor(mortgageValue * 1.1)
 
   const player = state.players.find(p => p.id === playerId)!
-  if (player.cash < unmortgageCost) throw new Error(`Need $${unmortgageCost} to unmortgage`)
+  if (player.cash < unmortgageCost) throw new Error(`Need ₹${unmortgageCost} to unmortgage`)
 
   let next = {
     ...state,
@@ -43,6 +43,6 @@ export function unmortgageProperty(state: GameState, playerId: string, squareInd
     ),
   }
   next = transferCash(next, playerId, null, unmortgageCost)
-  next = addLog(next, `${player.name} unmortgaged sq.${squareIndex} for $${unmortgageCost}.`)
+  next = addLog(next, `${player.name} unmortgaged sq.${squareIndex} for ₹${unmortgageCost}.`)
   return next
 }

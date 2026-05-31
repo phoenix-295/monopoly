@@ -49,7 +49,7 @@ function CornerSquare({ square, highlighted, highlightColor }: { square: BoardSq
       {isGo && (
         <>
           <div style={{ fontSize: 'clamp(0.9rem, 2vw, 1.4rem)', fontWeight: 900, fontFamily: 'Playfair Display, serif', color: '#E8192C', lineHeight: 1 }}>GO</div>
-          <div style={{ fontSize: 'clamp(0.45rem, 1.1vw, 0.7rem)', color: 'var(--cream-dim)', lineHeight: 1, textAlign: 'center' }}>Collect $200</div>
+          <div style={{ fontSize: 'clamp(0.45rem, 1.1vw, 0.7rem)', color: 'var(--cream-dim)', lineHeight: 1, textAlign: 'center' }}>Collect ₹200</div>
           <div style={{ fontSize: 'clamp(1rem, 2.5vw, 1.8rem)', lineHeight: 1 }}>→</div>
         </>
       )}
@@ -151,33 +151,12 @@ function RegularSquare({
             }}
           >
             {buildings?.hotel ? (
-              <div
-                title="Hotel"
-                style={{
-                  width: 9,
-                  height: 9,
-                  background: '#E8192C',
-                  border: '1px solid rgba(0,0,0,0.3)',
-                  borderRadius: 1,
-                  boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
-                }}
-              />
+              <span style={{ fontSize: 'clamp(0.5rem, 1.2vw, 0.8rem)', lineHeight: 1, filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.3))' }}>🏨</span>
             ) : (
               buildings?.houses && buildings.houses > 0 ? (
-                Array.from({ length: buildings.houses }).map((_, idx) => (
-                  <div
-                    key={idx}
-                    title={`${buildings.houses} Houses`}
-                    style={{
-                      width: 5,
-                      height: 5,
-                      background: '#22C55E',
-                      border: '1px solid rgba(0,0,0,0.3)',
-                      borderRadius: 1,
-                      boxShadow: '0 1px 1px rgba(0,0,0,0.15)',
-                    }}
-                  />
-                ))
+                <span style={{ fontSize: 'clamp(0.4rem, 1vw, 0.65rem)', lineHeight: 1, filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.3))', letterSpacing: '1px' }}>
+                  {'🏠'.repeat(buildings.houses)}
+                </span>
               ) : null
             )}
           </div>
@@ -228,15 +207,22 @@ function RegularSquare({
           </span>
         </div>
 
+        {/* Buildings text indicator */}
+        {isProperty && buildings && (buildings.hotel || buildings.houses > 0) && (
+          <div style={{ fontSize: 'clamp(0.28rem, 0.65vw, 0.42rem)', color: buildings.hotel ? '#E8192C' : '#22C55E', fontWeight: 800, fontFamily: 'monospace', flexShrink: 0, lineHeight: 1.1 }}>
+            {buildings.hotel ? 'HOTEL' : `${buildings.houses} 🏠`}
+          </div>
+        )}
+
         {/* Price */}
         {square.price && (
           <div style={{ fontSize: 'clamp(0.3rem, 0.75vw, 0.5rem)', color: 'var(--cream-dim)', fontWeight: 700, fontFamily: 'monospace', paddingBottom: '2px', flexShrink: 0 }}>
-            ${square.price}
+            ₹{square.price}
           </div>
         )}
         {square.taxAmount && (
           <div style={{ fontSize: 'clamp(0.3rem, 0.75vw, 0.5rem)', color: '#EF4444', fontWeight: 700, fontFamily: 'monospace', paddingBottom: '2px', flexShrink: 0 }}>
-            ${square.taxAmount}
+            ₹{square.taxAmount}
           </div>
         )}
       </div>

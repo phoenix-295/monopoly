@@ -35,12 +35,12 @@ export function resolveLanding(state: GameState, playerId: string): LandingResul
   // Taxes
   if (pos === INCOME_TAX_INDEX) {
     let next = transferCash(state, playerId, null, INCOME_TAX_AMOUNT)
-    next = addLog(next, `${player.name} paid Income Tax of $${INCOME_TAX_AMOUNT}.`)
+    next = addLog(next, `${player.name} paid Income Tax of ₹${INCOME_TAX_AMOUNT}.`)
     return { state: next, landingAction: 'tax' }
   }
   if (pos === LUXURY_TAX_INDEX) {
     let next = transferCash(state, playerId, null, LUXURY_TAX_AMOUNT)
-    next = addLog(next, `${player.name} paid Luxury Tax of $${LUXURY_TAX_AMOUNT}.`)
+    next = addLog(next, `${player.name} paid Luxury Tax of ₹${LUXURY_TAX_AMOUNT}.`)
     return { state: next, landingAction: 'tax' }
   }
 
@@ -76,7 +76,7 @@ export function resolveLanding(state: GameState, playerId: string): LandingResul
     const rent = calculateRent(state, pos, prop, diceTotal)
     let next = transferCash(state, playerId, prop.ownerId, rent)
     const owner = state.players.find(p => p.id === prop.ownerId)!
-    next = addLog(next, `${player.name} paid $${rent} rent to ${owner.name}.`)
+    next = addLog(next, `${player.name} paid ₹${rent} rent to ${owner.name}.`)
     return { state: next, landingAction: 'pay_rent' }
   }
 

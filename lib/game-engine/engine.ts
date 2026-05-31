@@ -96,7 +96,7 @@ function handleRoll(state: GameState, playerId: string): GameState {
       if (remaining === 0) {
         // Must pay fine
         next = transferCash(next, playerId, null, JAIL_FINE)
-        next = addLog(next, `${player.name} must pay $${JAIL_FINE} to leave jail.`)
+        next = addLog(next, `${player.name} must pay ₹${JAIL_FINE} to leave jail.`)
       } else {
         next = addLog(next, `${player.name} stays in jail (${remaining} turns left).`)
         return { ...next, phase: 'end_turn' }
@@ -158,7 +158,7 @@ function handleBuy(state: GameState, playerId: string): GameState {
     ],
     phase: 'end_turn',
   }
-  next = addLog(next, `${player.name} bought sq.${squareIndex} for $${price}.`)
+  next = addLog(next, `${player.name} bought sq.${squareIndex} for ₹${price}.`)
   return next
 }
 
@@ -179,7 +179,7 @@ function handlePayJailFine(state: GameState, playerId: string): GameState {
 
   let next = transferCash(state, playerId, null, JAIL_FINE)
   next = updatePlayer(next, playerId, { jailTurns: 0 })
-  next = addLog(next, `${player.name} paid $${JAIL_FINE} jail fine and is free.`)
+  next = addLog(next, `${player.name} paid ₹${JAIL_FINE} jail fine and is free.`)
   return { ...next, phase: 'rolling' }
 }
 

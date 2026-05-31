@@ -91,38 +91,38 @@ export default function PropertyCard({ square, onClose }: Props) {
             <>
               <div className="deed-row" style={{ borderBottom: '1px solid var(--felt-border)', paddingBottom: '0.5rem', marginBottom: '0.4rem' }}>
                 <span>Rent</span>
-                <span>${square.rent[0]}</span>
+                <span>₹{square.rent[0]}</span>
               </div>
               {['1 House', '2 Houses', '3 Houses', '4 Houses', 'Hotel'].map((label, i) => (
                 <div key={label} className="deed-row">
                   <span>With {label}</span>
-                  <span>${square.rent![i + 1]}</span>
+                  <span>₹{square.rent![i + 1]}</span>
                 </div>
               ))}
               <div style={{ height: 1, background: 'var(--felt-border)', margin: '0.6rem 0' }} />
               <div className="deed-row">
                 <span>Mortgage Value</span>
-                <span>${square.mortgage}</span>
+                <span>₹{square.mortgage}</span>
               </div>
               <div className="deed-row">
                 <span>Houses cost</span>
-                <span>${square.housePrice} each</span>
+                <span>₹{square.housePrice} each</span>
               </div>
               <div className="deed-row">
                 <span>Hotels cost</span>
-                <span>${square.housePrice} + 4 houses</span>
+                <span>₹{square.housePrice} + 4 houses</span>
               </div>
             </>
           )}
 
           {isRailroad && (
             <>
-              <div className="deed-row"><span>Rent (1 railroad)</span><span>$25</span></div>
-              <div className="deed-row"><span>2 railroads</span><span>$50</span></div>
-              <div className="deed-row"><span>3 railroads</span><span>$100</span></div>
-              <div className="deed-row"><span>4 railroads</span><span>$200</span></div>
+              <div className="deed-row"><span>Rent (1 railroad)</span><span>₹25</span></div>
+              <div className="deed-row"><span>2 railroads</span><span>₹50</span></div>
+              <div className="deed-row"><span>3 railroads</span><span>₹100</span></div>
+              <div className="deed-row"><span>4 railroads</span><span>₹200</span></div>
               <div style={{ height: 1, background: 'var(--felt-border)', margin: '0.6rem 0' }} />
-              <div className="deed-row"><span>Mortgage Value</span><span>$100</span></div>
+              <div className="deed-row"><span>Mortgage Value</span><span>₹100</span></div>
             </>
           )}
 
@@ -134,14 +134,14 @@ export default function PropertyCard({ square, onClose }: Props) {
                 If both utilities owned, rent = 10× dice roll.
               </p>
               <div style={{ height: 1, background: 'var(--felt-border)', margin: '0.6rem 0' }} />
-              <div className="deed-row"><span>Mortgage Value</span><span>$75</span></div>
+              <div className="deed-row"><span>Mortgage Value</span><span>₹75</span></div>
             </>
           )}
 
           <div style={{ marginTop: '0.85rem', textAlign: 'center', padding: '0.5rem', background: 'var(--felt-raised)', borderRadius: 8, border: '1px solid var(--felt-border)' }}>
             <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--cream)' }}>
-              {square.price ? `Purchase Price: $${square.price}` : ''}
-              {square.taxAmount ? `Pay $${square.taxAmount}` : ''}
+              {square.price ? `Purchase Price: $₹{square.price}` : ''}
+              {square.taxAmount ? `Pay $₹{square.taxAmount}` : ''}
             </span>
           </div>
         </div>
