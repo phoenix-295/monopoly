@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id        String   @id @db.Uuid
+  username  String   @unique
+  avatarUrl String?  @map("avatar_url")
+  wins      Int      @default(0)
+  losses    Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  hostedRooms  Room[]       @relation("HostedRooms")
+  roomPlayers  RoomPlayer[]
+  gameEvents   GameEvent[]
+
+  @@map("profiles")
+}
+
+model Room {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code       String   @unique
+  hostId     String   @map("host_id") @db.Uuid
+  status     String   @default("waiting")
+  maxPlayers Int      @default(6) @map("max_players")
+  settings   Json     @default("{}")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  host        Profile      @relation("HostedRooms", fields: [hostId], references: [id])
+  roomPlayers RoomPlayer[]
+  gameState   GameState?
+  gameEvents  GameEvent[]
+
+  @@map("rooms")
+}
+
+model RoomPlayer {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  roomId    String   @map("room_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  token     String?
+  turnOrder Int?     @map("turn_order")
+  isReady   Boolean  @default(false) @map("is_ready")
+  joinedAt  DateTime @default(now()) @map("joined_at")
+
+  room    Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  profile Profile @relation(fields: [userId], references: [id])
+
+  @@map("room_players")
+}
+
+model GameState {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  roomId    String   @unique @map("room_id") @db.Uuid
+  state     Json
+  version   Int      @default(0)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@map("game_state")
+}
+
+model GameEvent {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  roomId    String   @map("room_id") @db.Uuid
+  playerId  String   @map("player_id") @db.Uuid
+  action    String
+  payload   Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  room    Room    @relation(fields: [roomId], references: [id])
+  profile Profile @relation(fields: [playerId], references: [id])
+
+  @@map("game_events")
+}
